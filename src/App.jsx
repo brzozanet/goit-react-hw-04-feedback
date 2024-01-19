@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Component } from "react";
+import { Statistics } from "./components/Statistics/Statistics";
+import { FeedbackOptions } from "./components/FeedbackOptions/FeedbackOptions";
+import { Notification } from "./components/Notification/Notification";
+import css from "./App.module.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export class App extends Component {
+  state = {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  };
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  countTotalFeedback = () => {
+    return this.state.good + this.state.neutral + this.state.bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    return Math.round(
+      (this.state.good /
+        (this.state.good + this.state.neutral + this.state.bad)) *
+        100
+    );
+  };
+
+  onLeaveFeedback = (name) => {
+    this.setState((prevState) => ({
+      [name]: prevState[name] + 1,
+    }));
+  };
+
+  render() {
+    return (
+      <div className={css.App}>
+        <FeedbackOptions
+          options={Object.keys(this.state)}
+          onLeaveFeedback={this.onLeaveFeedback}
+        />
+
+        {this.countTotalFeedback() === 0 ? (
+          <Notification message="There is no feedback" />
+        ) : (
+          <Statistics
+            good={this.state.good}
+            neutral={this.state.neutral}
+            bad={this.state.bad}
+            total={this.countTotalFeedback()}
+            positivePercentage={this.countPositiveFeedbackPercentage()}
+          />
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
+  }
 }
-
-export default App
