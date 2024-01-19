@@ -31,7 +31,7 @@ export class App extends Component {
 
   render() {
     return (
-      <div className={css.App}>
+      <div className={css.container}>
         <FeedbackOptions
           options={Object.keys(this.state)}
           onLeaveFeedback={this.onLeaveFeedback}
