@@ -4,6 +4,8 @@ import { FeedbackOptions } from "./components/FeedbackOptions/FeedbackOptions";
 import { Notification } from "./components/Notification/Notification";
 import css from "./App.module.css";
 
+// test
+
 export const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
